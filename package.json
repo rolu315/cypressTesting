@@ -1,0 +1,37 @@
+{
+  "name": "cypress_testing_demo_no_cucumber",
+  "version": "1.0.0",
+  "description": "This repository houses my implementation of Cypress for end-to-end testing.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:record": "cypress run --record --key cdd52de5-ac51-42a2-9b9c-3fdc31e77259",
+    "open": "cypress open",
+    "run": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rolu315/cypressTesting.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rolu315/cypressTesting/issues"
+  },
+  "homepage": "https://github.com/rolu315/cypressTesting#readme",
+  "dependencies": {
+    "@cypress/webpack-preprocessor": "^5.15.1",
+    "ts-loader": "^9.4.2",
+    "webpack": "^5.88.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.8",
+    "@babel/preset-env": "^7.0.0",
+    "@types/node": "^22.7.6",
+    "babel-loader": "^8.0.2",
+    "cypress": "^13.15.0",
+    "junit-report-builder": "^3.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
