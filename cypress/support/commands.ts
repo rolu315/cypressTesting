@@ -1,5 +1,8 @@
 /// <reference types="cypress" />
+import { loginPage } from '../pageObjects/login.po';
+import { HttpMethod } from '../utilities/enums/httpMethods';
 
+//adding the export here turns this from a script page to a module page
 export { };
 
 declare global {
@@ -11,10 +14,9 @@ declare global {
         }
     }
 }
+
 Cypress.Commands.add('login', (email, password) => {
-    cy.get('input[id="email"]').type(email);
-    cy.get('input[id="password"]').type(password);
-    cy.get('button[id="submit"]').click();
+    loginPage.login(email, password);
 });
 
 Cypress.Commands.add('createGraphQlAlias', (operationName, alias) => {
@@ -24,7 +26,8 @@ Cypress.Commands.add('createGraphQlAlias', (operationName, alias) => {
         }
     });
 });
-import { HttpMethod } from '../utilities/enums/httpMethods';
+
+
 Cypress.Commands.add('createRestIntercept', (method, url, alias) => {
     if (!Object.values(HttpMethod).includes(method)) {
         throw new Error(`Invalid HTTP method: ${method}. Allowed methods are: ${Object.keys(HttpMethod).join(', ')}`);
