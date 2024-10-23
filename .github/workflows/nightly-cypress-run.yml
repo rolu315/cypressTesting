@@ -21,10 +21,15 @@ jobs:
         with:
           node-version: '20'
 
-      # Create the cypress.env.json file from the secret
+      # Create the cypress.env.json file dynamically using GitHub secrets
       - name: Create cypress.env.json
         run: |
-          echo '${{ secrets.CYPRESS_ENV_JSON }}' > ./cypress.env.json
+          echo '{
+            "login": {
+              "email": "${{ secrets.CYPRESS_EMAIL }}",
+              "password": "${{ secrets.CYPRESS_PASSWORD }}"
+            }
+          }' > ./cypress.env.json
 
       # Install dependencies
       - name: Install dependencies
