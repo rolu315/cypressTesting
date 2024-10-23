@@ -24,12 +24,7 @@ jobs:
       # Create the cypress.env.json file from secrets
       - name: Create cypress.env.json
         run: |
-          echo '{
-            "login": {
-              "email": "${{ secrets.CYPRESS_LOGIN_EMAIL }}",
-              "password": "${{ secrets.CYPRESS_LOGIN_PASSWORD }}"
-            }
-          }' > ./cypress.env.json
+          echo '${{ secrets.CYPRESS_ENV_FILE }}' > ./cypress.env.json
 
       # Install dependencies
       - name: Install dependencies
