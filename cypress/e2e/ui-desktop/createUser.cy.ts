@@ -1,43 +1,48 @@
 import { contactListPage } from '../../pageObjects/contactList.po';
 import { loginPage } from '../../pageObjects/login.po';
 import { signupPage } from '../../pageObjects/signUp.po';
-import { generateRandomUser } from '../../utilities/utilities';
+
+beforeEach(() => {
+    signupPage.visit();
+});
 
 describe('Create New User', () => {
     it('should create a new user', () => {
-        const user = generateRandomUser();
-        signupPage.visit();
-        signupPage.enterFirstName(user.firstName);
-        signupPage.enterLastName(user.lastName);
-        signupPage.enterEmail(user.email);
-        signupPage.enterPassword(user.password);
-        signupPage.submit();
-        contactListPage.validateContactListUrl();
+        cy.createUser().then((signUpData) => {
+            signupPage.signUpNewUser(signUpData).submit();
+            contactListPage.validateContactListUrl();
+        });
     });
 
     it('should not create a new user with an existing email', () => {
-        const user = generateRandomUser();
+        cy.createUser().then((signUpUser1) => {
+            signupPage.signUpNewUser(signUpUser1).submit();
+            contactListPage.validateContactListUrl();
+            cy.wrap(signUpUser1.email).as('signUpUser1');
+            contactListPage.logout();
+        });
         signupPage.visit();
-        signupPage.enterFirstName(user.firstName);
-        signupPage.enterLastName(user.lastName);
-        signupPage.enterEmail(user.email);
-        signupPage.enterPassword(user.password);
-        signupPage.submit();
-        signupPage.validateSignupPageUrl();
+        cy.createUser().then((signUpUser2) => {
+            cy.get('@signUpUser1').then((signUpUser1) => {
+                signupPage.enterFirstName(signUpUser2.firstName);
+                signupPage.enterLastName(signUpUser2.lastName);
+                signupPage.enterEmail(signUpUser1.toString());
+                signupPage.enterPassword(signUpUser2.password);
+                signupPage.submit();
+                signupPage.isEmailErrorMessageDisplayed();
+            });
+        });
     });
-
+    
     it('newly created user should be able to login', () => {
-        const user = generateRandomUser();
-        signupPage.visit();
-        signupPage.enterFirstName(user.firstName);
-        signupPage.enterLastName(user.lastName);
-        signupPage.enterEmail(user.email);
-        signupPage.enterPassword(user.password);
-        signupPage.submit();
-        contactListPage.validateContactListUrl();
-        contactListPage.logout();
-        loginPage.validateLoginUrl();
-        loginPage.login(user.email, user.password);
-        contactListPage.validateContactListUrl();
+        cy.createUser().then((signUpUser) => {
+            signupPage.signUpNewUser(signUpUser).submit();
+            contactListPage.validateContactListUrl();
+            contactListPage.logout();
+            loginPage.validateLoginUrl();
+            loginPage.login(signUpUser.email, signUpUser.password);
+            contactListPage.validateContactListUrl();
+        });
     });
 });
+
