@@ -1,8 +1,10 @@
-name: Nightly Cypress Tests
+name: Cypress Tests
 
+# Enable both scheduled and manual runs
 on:
   schedule:
-    - cron: '0 0 * * *' 
+    - cron: '0 0 * * *'  # Scheduled run at midnight UTC
+  workflow_dispatch:     # Allows manual triggering
 
 jobs:
   cypress-tests:
@@ -21,4 +23,5 @@ jobs:
 
       - name: Run Cypress tests
         run: npx cypress run
+
 
