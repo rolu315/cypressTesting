@@ -1,14 +1,13 @@
 name: Cypress Tests
 
-# Define event triggers in the `on` block
 on:
-  push:                     # Trigger the workflow on every push
+  push:
     branches:
-      - main                # You can specify branches (e.g., 'main')
-  pull_request:              # Trigger the workflow on pull requests
-  workflow_dispatch:         # Allow manual triggers
+      - main
+  pull_request:
+  workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'      # Schedule to run nightly at midnight UTC
+    - cron: '0 0 * * *'  # Runs nightly at midnight UTC
 
 jobs:
   cypress-tests:
@@ -22,9 +21,15 @@ jobs:
         with:
           node-version: '16'
 
+      # Create the cypress.env.json file from the secret
+      - name: Create cypress.env.json
+        run: |
+          echo '${{ secrets.CYPRESS_ENV_JSON }}' > ./cypress.env.json
+
+      # Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # Run Cypress tests
       - name: Run Cypress tests
         run: npx cypress run
-
