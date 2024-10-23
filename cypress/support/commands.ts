@@ -14,6 +14,7 @@ declare global {
             createRestIntercept(method: string, url: string, alias: string): Chainable<any>;
             generateContactData(): Chainable<any>;
             createUser(): Chainable<any>;
+            handleConfirmDialog(expectedMessage: string, accept?: boolean): Chainable
         }
     }
 }
@@ -30,6 +31,19 @@ Cypress.Commands.add('createGraphQlAlias', (operationName, alias) => {
     });
 });
 
+// cypress/support/commands.ts
+
+Cypress.Commands.add('handleConfirmDialog', (expectedMessage: string, accept = true) => {
+    cy.on('window:confirm', (text) => {
+      // Log and assert the confirm dialog's text
+      cy.log(`Confirm dialog appeared with message: "${text}"`);
+      expect(text).to.contains(expectedMessage);
+  
+      // Return true to click "OK", or false to click "Cancel"
+      return accept;
+    });
+  });
+  
 
 Cypress.Commands.add('createRestIntercept', (method, url, alias) => {
     if (!Object.values(HttpMethod).includes(method)) {

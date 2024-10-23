@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:record": "cypress run --record --key cdd52de5-ac51-42a2-9b9c-3fdc31e77259",
     "open": "cypress open",
-    "run": "cypress run"
+    "cli": "cypress run"
   },
   "repository": {
     "type": "git",
