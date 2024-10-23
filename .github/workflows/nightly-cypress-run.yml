@@ -21,13 +21,13 @@ jobs:
         with:
           node-version: '20'
 
-      # Create the cypress.env.json file dynamically using GitHub secrets
+      # Create the cypress.env.json file from secrets
       - name: Create cypress.env.json
         run: |
           echo '{
             "login": {
-              "email": "${{ secrets.CYPRESS_EMAIL }}",
-              "password": "${{ secrets.CYPRESS_PASSWORD }}"
+              "email": "${{ secrets.CYPRESS_LOGIN_EMAIL }}",
+              "password": "${{ secrets.CYPRESS_LOGIN_PASSWORD }}"
             }
           }' > ./cypress.env.json
 
@@ -45,3 +45,10 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots
+
+      # Upload Cypress videos as an artifact (if video recording is enabled)
+      - name: Upload Cypress Videos
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-videos
+          path: cypress/videos
