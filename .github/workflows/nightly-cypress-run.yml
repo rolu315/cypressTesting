@@ -38,3 +38,10 @@ jobs:
       # Run Cypress tests
       - name: Run Cypress tests
         run: npx cypress run
+
+      # Upload Cypress screenshots as an artifact
+      - name: Upload Cypress Screenshots
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
